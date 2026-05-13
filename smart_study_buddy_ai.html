@@ -1,0 +1,784 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent: #4F6EF7;
+  --accent2: #7C3AED;
+  --bg: var(--color-background-tertiary);
+  --card: var(--color-background-primary);
+  --border: var(--color-border-tertiary);
+  --text: var(--color-text-primary);
+  --muted: var(--color-text-secondary);
+  --hint: var(--color-text-tertiary);
+  --success-bg: var(--color-background-success);
+  --success-text: var(--color-text-success);
+  --info-bg: var(--color-background-info);
+  --info-text: var(--color-text-info);
+  --warn-bg: var(--color-background-warning);
+  --warn-text: var(--color-text-warning);
+  --danger-bg: var(--color-background-danger);
+  --danger-text: var(--color-text-danger);
+  --radius: var(--border-radius-lg);
+  --radius-md: var(--border-radius-md);
+}
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+h1,h2,h3,h4 { font-weight: 500; }
+
+/* NAV */
+.nav { display: flex; align-items: center; gap: 0; background: var(--card); border-bottom: 0.5px solid var(--border); padding: 0 1rem; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
+.nav-brand { display: flex; align-items: center; gap: 8px; padding: 12px 16px 12px 0; border-right: 0.5px solid var(--border); margin-right: 8px; }
+.nav-brand .logo { width: 28px; height: 28px; background: linear-gradient(135deg, #4F6EF7, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.nav-brand span { font-weight: 500; font-size: 15px; }
+.nav-tab { padding: 14px 12px; font-size: 13px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-tab i { font-size: 15px; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.dark-toggle { cursor: pointer; padding: 6px 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border); background: transparent; color: var(--muted); font-size: 14px; display: flex; align-items: center; gap: 5px; }
+.dark-toggle:hover { background: var(--color-background-secondary); color: var(--text); }
+.streak-badge { background: var(--warn-bg); color: var(--warn-text); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+
+/* PAGES */
+.page { display: none; padding: 1.5rem 1rem; max-width: 820px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* HERO */
+.hero { text-align: center; padding: 2.5rem 1rem 2rem; }
+.hero h1 { font-size: 28px; font-weight: 600; background: linear-gradient(135deg, #4F6EF7, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+.hero p { color: var(--muted); font-size: 15px; margin-bottom: 1.5rem; }
+.hero-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.hero-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem; cursor: pointer; transition: all 0.15s; text-align: left; }
+.hero-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.hero-card .icon { width: 36px; height: 36px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 18px; }
+.hero-card h3 { font-size: 14px; margin-bottom: 4px; }
+.hero-card p { font-size: 12px; color: var(--muted); }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+.stat-card { background: var(--color-background-secondary); border-radius: var(--radius-md); padding: 1rem; text-align: center; }
+.stat-card .num { font-size: 24px; font-weight: 500; }
+.stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.quote-box { background: var(--info-bg); border-radius: var(--radius); padding: 1rem 1.25rem; border: 0.5px solid var(--color-border-tertiary); text-align: left; }
+.quote-box p { font-size: 14px; color: var(--info-text); font-style: italic; }
+.quote-box .author { font-size: 12px; color: var(--info-text); margin-top: 6px; opacity: 0.8; }
+
+/* CARDS */
+.card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.card-title { font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.card-title i { color: var(--accent); }
+.section-label { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-grid.single { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 12px; color: var(--muted); }
+input[type=text], input[type=date], input[type=number], select, textarea { width: 100%; padding: 8px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-md); background: var(--color-background-secondary); color: var(--text); font-family: var(--font-sans); font-size: 14px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(79,110,247,0.15); }
+textarea { resize: vertical; min-height: 80px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-md); border: 0.5px solid var(--border); background: transparent; color: var(--text); font-family: var(--font-sans); font-size: 14px; cursor: pointer; transition: all 0.15s; font-weight: 500; }
+.btn:hover { background: var(--color-background-secondary); }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn-primary:hover { background: #3d5ae4; border-color: #3d5ae4; }
+.btn-purple { background: var(--accent2); color: white; border-color: var(--accent2); }
+.btn-purple:hover { background: #6d28d9; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+/* HOMEWORK LIST */
+.hw-list { display: flex; flex-direction: column; gap: 8px; }
+.hw-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-md); background: var(--color-background-secondary); transition: all 0.15s; }
+.hw-item.done { opacity: 0.5; }
+.hw-item.done .hw-title { text-decoration: line-through; }
+.hw-check { width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all 0.15s; }
+.hw-check.checked { background: var(--accent); border-color: var(--accent); color: white; }
+.hw-info { flex: 1; min-width: 0; }
+.hw-title { font-size: 14px; font-weight: 500; }
+.hw-meta { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-blue { background: var(--info-bg); color: var(--info-text); }
+.badge-red { background: var(--danger-bg); color: var(--danger-text); }
+.badge-green { background: var(--success-bg); color: var(--success-text); }
+.badge-amber { background: var(--warn-bg); color: var(--warn-text); }
+.hw-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.icon-btn { width: 28px; height: 28px; border-radius: var(--radius-md); border: 0.5px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.1s; }
+.icon-btn:hover { background: var(--color-background-secondary); color: var(--text); }
+.ai-suggestion { background: var(--info-bg); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--radius-md); padding: 10px 12px; margin-top: 10px; font-size: 13px; color: var(--info-text); display: flex; gap: 8px; align-items: flex-start; }
+.ai-suggestion i { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* PLANNER */
+.planner-schedule { display: flex; flex-direction: column; gap: 8px; }
+.day-block { border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.day-header { background: var(--color-background-secondary); padding: 8px 12px; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: space-between; }
+.day-slots { padding: 8px 12px; display: flex; flex-direction: column; gap: 6px; }
+.slot { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.slot-time { color: var(--muted); min-width: 60px; font-size: 12px; }
+.slot-subject { flex: 1; }
+.slot-type { font-size: 11px; }
+
+/* AI RESPONSE */
+.ai-response { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-top: 12px; }
+.ai-response-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent); font-size: 14px; font-weight: 500; }
+.ai-response-body { font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+.loading-dots { display: inline-flex; gap: 4px; align-items: center; }
+.loading-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: bounce 1.2s infinite; }
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+
+/* TIPS */
+.tip-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-bottom: 1rem; }
+.tip-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+.tip-text { font-size: 16px; line-height: 1.6; }
+.tip-category { display: inline-block; margin-top: 10px; }
+.tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 1rem; }
+.tip-mini { background: var(--color-background-secondary); border-radius: var(--radius-md); padding: 10px 12px; font-size: 13px; }
+.tip-mini .tip-mini-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+
+/* PROGRESS */
+.progress-bar-wrap { background: var(--color-background-secondary); border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #4F6EF7, #7C3AED); transition: width 0.4s; }
+.subject-progress { display: flex; flex-direction: column; gap: 10px; }
+.subj-row { display: flex; flex-direction: column; gap: 4px; }
+.subj-row-top { display: flex; justify-content: space-between; font-size: 13px; }
+.subj-name { font-weight: 500; }
+.subj-pct { color: var(--muted); }
+
+/* ABOUT */
+.about-hero { text-align: center; padding: 2rem 1rem; }
+.about-hero h2 { font-size: 22px; margin-bottom: 8px; }
+.about-hero p { color: var(--muted); font-size: 14px; max-width: 480px; margin: 0 auto; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 1.5rem; }
+.feature-item { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+.feature-item .fi-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+.feature-item h3 { font-size: 14px; margin-bottom: 4px; }
+.feature-item p { font-size: 12px; color: var(--muted); }
+
+/* TABS */
+.sub-tabs { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
+.sub-tab { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.15s; }
+.sub-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.sub-panel { display: none; }
+.sub-panel.active { display: block; }
+
+/* EMPTY */
+.empty { text-align: center; padding: 2rem; color: var(--hint); font-size: 14px; }
+.empty i { font-size: 32px; display: block; margin-bottom: 8px; }
+
+/* CHAT */
+.chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; max-height: 350px; overflow-y: auto; padding: 4px; }
+.chat-msg { max-width: 85%; }
+.chat-msg.user { align-self: flex-end; }
+.chat-msg.ai { align-self: flex-start; }
+.chat-bubble { padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.6; }
+.chat-msg.user .chat-bubble { background: var(--accent); color: white; border-bottom-right-radius: 4px; }
+.chat-msg.ai .chat-bubble { background: var(--color-background-secondary); border: 0.5px solid var(--border); border-bottom-left-radius: 4px; }
+.chat-input-row { display: flex; gap: 8px; }
+.chat-input-row input { flex: 1; }
+.chat-input-row button { flex-shrink: 0; }
+
+/* ANIMATIONS */
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.voice-btn { position: relative; }
+.voice-btn.recording { background: var(--danger-bg); border-color: var(--danger-text); color: var(--danger-text); }
+</style>
+
+<h2 class="sr-only">Smart Study Buddy AI — student assistant with homework organizer, study planner, doubt solver, and tips</h2>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="logo"><i class="ti ti-brain" style="color:white;font-size:16px" aria-hidden="true"></i></div>
+    <span>Study Buddy</span>
+  </div>
+  <div class="nav-tab active" onclick="showPage('home')" id="tab-home"><i class="ti ti-home" aria-hidden="true"></i> Home</div>
+  <div class="nav-tab" onclick="showPage('homework')" id="tab-homework"><i class="ti ti-checklist" aria-hidden="true"></i> Homework</div>
+  <div class="nav-tab" onclick="showPage('planner')" id="tab-planner"><i class="ti ti-calendar-event" aria-hidden="true"></i> Planner</div>
+  <div class="nav-tab" onclick="showPage('doubts')" id="tab-doubts"><i class="ti ti-message-circle-question" aria-hidden="true"></i> Doubts</div>
+  <div class="nav-tab" onclick="showPage('tips')" id="tab-tips"><i class="ti ti-bulb" aria-hidden="true"></i> Tips</div>
+  <div class="nav-tab" onclick="showPage('about')" id="tab-about"><i class="ti ti-info-circle" aria-hidden="true"></i> About</div>
+  <div class="nav-right">
+    <div class="streak-badge"><i class="ti ti-flame" aria-hidden="true"></i> <span id="streak-num">0</span> day streak</div>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Smart Study Buddy AI</h1>
+    <p>Learn smarter every day. Your personal AI-powered study assistant.</p>
+    <div class="hero-cards">
+      <div class="hero-card" onclick="showPage('homework')">
+        <div class="icon" style="background:var(--info-bg);"><i class="ti ti-checklist" style="color:var(--info-text);font-size:20px" aria-hidden="true"></i></div>
+        <h3>Homework</h3>
+        <p>Track & organize tasks</p>
+      </div>
+      <div class="hero-card" onclick="showPage('planner')">
+        <div class="icon" style="background:var(--success-bg);"><i class="ti ti-calendar-event" style="color:var(--success-text);font-size:20px" aria-hidden="true"></i></div>
+        <h3>AI Planner</h3>
+        <p>Smart study schedule</p>
+      </div>
+      <div class="hero-card" onclick="showPage('doubts')">
+        <div class="icon" style="background:var(--warn-bg);"><i class="ti ti-message-circle-question" style="color:var(--warn-text);font-size:20px" aria-hidden="true"></i></div>
+        <h3>Doubt Solver</h3>
+        <p>Ask any question</p>
+      </div>
+      <div class="hero-card" onclick="showPage('tips')">
+        <div class="icon" style="background:var(--danger-bg);"><i class="ti ti-bulb" style="color:var(--danger-text);font-size:20px" aria-hidden="true"></i></div>
+        <h3>Daily Tips</h3>
+        <p>Motivation & tricks</p>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="stat-pending" style="color:var(--accent)">0</div>
+        <div class="lbl">Tasks pending</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-done" style="color:var(--success-text)">0</div>
+        <div class="lbl">Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-streak" style="color:var(--warn-text)">0</div>
+        <div class="lbl">Day streak</div>
+      </div>
+    </div>
+    <div class="quote-box" id="home-quote">
+      <p id="daily-quote">"The secret of getting ahead is getting started."</p>
+      <div class="author">— Mark Twain</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="ti ti-trending-up" aria-hidden="true"></i> Progress Overview</div></div>
+    <div class="subject-progress" id="home-progress">
+      <div class="empty"><i class="ti ti-chart-bar" aria-hidden="true"></i>Add homework to see your progress</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOMEWORK PAGE -->
+<div class="page" id="page-homework">
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="ti ti-plus-circle" aria-hidden="true"></i> Add Homework</div></div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Task name</label>
+        <input type="text" id="hw-task" placeholder="e.g. Complete Chapter 5 exercises">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" id="hw-subject" placeholder="e.g. Mathematics">
+      </div>
+      <div class="form-group">
+        <label>Due date</label>
+        <input type="date" id="hw-date">
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="hw-priority">
+          <option value="high">High — urgent</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low — can wait</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="addHomework()"><i class="ti ti-plus" aria-hidden="true"></i> Add Task</button>
+      <button class="btn" onclick="getAISuggestion()"><i class="ti ti-brain" aria-hidden="true"></i> AI Priority ↗</button>
+    </div>
+  </div>
+
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="filterHW('all', this)">All</div>
+    <div class="sub-tab" onclick="filterHW('pending', this)">Pending</div>
+    <div class="sub-tab" onclick="filterHW('done', this)">Completed</div>
+  </div>
+
+  <div id="ai-hw-suggestion" style="display:none"></div>
+  <div class="hw-list" id="hw-list"></div>
+  <div class="empty" id="hw-empty"><i class="ti ti-clipboard" aria-hidden="true"></i>No homework yet. Add your first task above!</div>
+</div>
+
+<!-- PLANNER PAGE -->
+<div class="page" id="page-planner">
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="ti ti-calendar-stats" aria-hidden="true"></i> Create Study Plan</div></div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Subjects (comma separated)</label>
+        <input type="text" id="plan-subjects" placeholder="Math, Science, English, History">
+      </div>
+      <div class="form-group">
+        <label>Daily study hours available</label>
+        <input type="number" id="plan-hours" placeholder="e.g. 3" min="1" max="12" value="3">
+      </div>
+      <div class="form-group">
+        <label>Exam / test date</label>
+        <input type="date" id="plan-exam">
+      </div>
+      <div class="form-group">
+        <label>Weakest subject</label>
+        <input type="text" id="plan-weak" placeholder="e.g. Science">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:10px">
+      <label>Any specific goals or notes?</label>
+      <textarea id="plan-notes" placeholder="e.g. Need to focus on algebra, have a project due Friday..."></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generatePlan()"><i class="ti ti-brain" aria-hidden="true"></i> Generate AI Study Plan ↗</button>
+    </div>
+  </div>
+  <div id="plan-output" style="display:none">
+    <div class="ai-response fade-in">
+      <div class="ai-response-header"><i class="ti ti-robot" aria-hidden="true"></i> Your personalized study plan</div>
+      <div class="ai-response-body" id="plan-text"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DOUBTS PAGE -->
+<div class="page" id="page-doubts">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><i class="ti ti-message-question" aria-hidden="true"></i> Ask Your Doubt</div>
+      <button class="btn btn-sm voice-btn" id="voice-btn" onclick="toggleVoice()"><i class="ti ti-microphone" aria-hidden="true"></i> Voice</button>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg ai">
+        <div class="chat-bubble">Hi there! 👋 I'm your Study Buddy. Ask me anything — a tough math problem, a confusing history event, or any subject question. I'll explain it simply!</div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="doubt-input" placeholder="Type your question here... e.g. What is photosynthesis?" onkeydown="if(event.key==='Enter')sendDoubt()">
+      <button class="btn btn-primary" onclick="sendDoubt()"><i class="ti ti-send" aria-hidden="true"></i></button>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--muted);align-self:center">Try:</span>
+      <button class="btn btn-sm" onclick="askSample('Explain photosynthesis simply')">Photosynthesis</button>
+      <button class="btn btn-sm" onclick="askSample('What is the water cycle?')">Water cycle</button>
+      <button class="btn btn-sm" onclick="askSample('How do fractions work?')">Fractions</button>
+      <button class="btn btn-sm" onclick="askSample('What caused World War 1?')">WW1 causes</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIPS PAGE -->
+<div class="page" id="page-tips">
+  <div class="card" id="tip-display">
+    <div class="card-header"><div class="card-title"><i class="ti ti-bulb" aria-hidden="true"></i> Daily Study Tip</div></div>
+    <div style="text-align:center;padding:1rem 0">
+      <span class="tip-icon" id="tip-emoji">💡</span>
+      <div id="tip-content" class="tip-text">Click "Generate New Tip" to get your personalized daily tip!</div>
+      <div id="tip-cat" class="tip-category" style="margin-top:10px"></div>
+    </div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="generateTip()"><i class="ti ti-refresh" aria-hidden="true"></i> Generate New Tip ↗</button>
+      <button class="btn" onclick="generateTip('motivation')"><i class="ti ti-heart" aria-hidden="true"></i> Motivation</button>
+      <button class="btn" onclick="generateTip('memory')"><i class="ti ti-brain" aria-hidden="true"></i> Memory trick</button>
+      <button class="btn" onclick="generateTip('exam')"><i class="ti ti-pencil" aria-hidden="true"></i> Exam prep</button>
+    </div>
+  </div>
+  <div class="tips-grid" id="saved-tips">
+    <div class="tip-mini">
+      <div class="tip-mini-label"><i class="ti ti-star" aria-hidden="true"></i> Quick tip</div>
+      Use the Pomodoro technique: study for 25 minutes, then take a 5-minute break. Repeat 4 times, then take a longer break.
+    </div>
+    <div class="tip-mini">
+      <div class="tip-mini-label"><i class="ti ti-star" aria-hidden="true"></i> Memory trick</div>
+      Create silly sentences to memorize lists. For planets: "My Very Educated Mother Just Served Us Nachos."
+    </div>
+    <div class="tip-mini">
+      <div class="tip-mini-label"><i class="ti ti-star" aria-hidden="true"></i> Productivity</div>
+      Start with the hardest subject when your energy is highest. Your brain is freshest in the morning.
+    </div>
+    <div class="tip-mini">
+      <div class="tip-mini-label"><i class="ti ti-star" aria-hidden="true"></i> Exam prep</div>
+      Teach what you've learned to someone else. If you can explain it simply, you truly understand it.
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div style="width:60px;height:60px;background:linear-gradient(135deg,#4F6EF7,#7C3AED);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+      <i class="ti ti-brain" style="color:white;font-size:28px" aria-hidden="true"></i>
+    </div>
+    <h2>Smart Study Buddy AI</h2>
+    <p style="margin-top:6px;font-size:16px;color:var(--accent);font-style:italic">"Learn smarter every day."</p>
+    <p style="margin-top:12px">Your all-in-one AI-powered study companion, designed for students in Grades 5–10 to organise tasks, plan smarter, solve doubts, and stay motivated.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-checklist" style="color:var(--info-text)" aria-hidden="true"></i></span>
+      <h3>Homework Organizer</h3>
+      <p>Track tasks by subject and deadline. AI prioritizes what to do first.</p>
+    </div>
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-calendar-event" style="color:var(--success-text)" aria-hidden="true"></i></span>
+      <h3>AI Study Planner</h3>
+      <p>Enter your subjects and exam dates. Get a balanced daily plan with break reminders.</p>
+    </div>
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-message-circle-question" style="color:var(--warn-text)" aria-hidden="true"></i></span>
+      <h3>Doubt Solver</h3>
+      <p>Ask any school question in plain language. Get clear, simple explanations instantly.</p>
+    </div>
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-bulb" style="color:var(--danger-text)" aria-hidden="true"></i></span>
+      <h3>Daily Tips</h3>
+      <p>Motivation, memory tricks, productivity hacks, and exam prep advice on demand.</p>
+    </div>
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-trending-up" style="color:var(--accent)" aria-hidden="true"></i></span>
+      <h3>Progress Tracker</h3>
+      <p>Visualize your completed tasks by subject and maintain your study streak.</p>
+    </div>
+    <div class="feature-item">
+      <span class="fi-icon"><i class="ti ti-microphone" style="color:var(--accent2)" aria-hidden="true"></i></span>
+      <h3>Voice Input</h3>
+      <p>Ask doubts using your voice — no typing needed! (where supported)</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1rem;text-align:center">
+    <p style="font-size:13px;color:var(--muted)">Built with ❤️ using Claude AI · For students who want to learn smarter, not harder.</p>
+  </div>
+</div>
+
+<script>
+const QUOTES = [
+  {text:'"The secret of getting ahead is getting started."', by:'Mark Twain'},
+  {text:'"Success is the sum of small efforts, repeated day in and day out."', by:'Robert Collier'},
+  {text:'"Learning is not attained by chance; it must be sought with ardor."', by:'Abigail Adams'},
+  {text:'"The beautiful thing about learning is that no one can take it away from you."', by:'B.B. King'},
+  {text:'"Education is the most powerful weapon you can use to change the world."', by:'Nelson Mandela'},
+];
+
+let homeworkItems = [];
+let hwFilter = 'all';
+let studyStreak = parseInt(localStorage.getItem('studyStreak')||'0');
+let lastVisit = localStorage.getItem('lastVisit')||'';
+let voiceRecognition = null;
+let isRecording = false;
+
+function initStreak() {
+  const today = new Date().toDateString();
+  if (lastVisit !== today) {
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if (lastVisit === yesterday.toDateString()) studyStreak++;
+    else if (lastVisit !== today) studyStreak = lastVisit ? (lastVisit === yesterday.toDateString() ? studyStreak+1 : 1) : 1;
+    localStorage.setItem('studyStreak', studyStreak);
+    localStorage.setItem('lastVisit', today);
+  }
+  document.getElementById('streak-num').textContent = studyStreak;
+  document.getElementById('stat-streak').textContent = studyStreak;
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if (id==='home') updateHomeStats();
+}
+
+function pickRandomQuote() {
+  const q = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById('daily-quote').textContent = q.text;
+  document.querySelector('.quote-box .author').textContent = '— '+q.by;
+}
+
+function updateHomeStats() {
+  const pending = homeworkItems.filter(h=>!h.done).length;
+  const done = homeworkItems.filter(h=>h.done).length;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-done').textContent = done;
+  updateProgressChart();
+}
+
+function updateProgressChart() {
+  const el = document.getElementById('home-progress');
+  if (homeworkItems.length === 0) {
+    el.innerHTML = '<div class="empty"><i class="ti ti-chart-bar"></i>Add homework to see your progress</div>';
+    return;
+  }
+  const subjects = {};
+  homeworkItems.forEach(h => {
+    if (!subjects[h.subject]) subjects[h.subject] = {total:0, done:0};
+    subjects[h.subject].total++;
+    if (h.done) subjects[h.subject].done++;
+  });
+  el.innerHTML = Object.entries(subjects).map(([s,v]) => {
+    const pct = Math.round((v.done/v.total)*100);
+    return `<div class="subj-row">
+      <div class="subj-row-top"><span class="subj-name">${s}</span><span class="subj-pct">${v.done}/${v.total} (${pct}%)</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function addHomework() {
+  const task = document.getElementById('hw-task').value.trim();
+  const subject = document.getElementById('hw-subject').value.trim();
+  const date = document.getElementById('hw-date').value;
+  const priority = document.getElementById('hw-priority').value;
+  if (!task || !subject) { alert('Please enter task name and subject!'); return; }
+  const item = { id: Date.now(), task, subject, date, priority, done: false };
+  homeworkItems.push(item);
+  document.getElementById('hw-task').value='';
+  document.getElementById('hw-subject').value='';
+  document.getElementById('hw-date').value='';
+  renderHomework();
+}
+
+function renderHomework() {
+  const list = document.getElementById('hw-list');
+  const empty = document.getElementById('hw-empty');
+  let items = [...homeworkItems];
+  if (hwFilter === 'pending') items = items.filter(h=>!h.done);
+  if (hwFilter === 'done') items = items.filter(h=>h.done);
+  items.sort((a,b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    const pd = {high:0,medium:1,low:2};
+    return pd[a.priority]-pd[b.priority];
+  });
+  if (items.length === 0) {
+    list.innerHTML=''; empty.style.display='block';
+  } else {
+    empty.style.display='none';
+    list.innerHTML = items.map(h => {
+      const pBadge = h.priority==='high' ? 'badge-red' : h.priority==='medium' ? 'badge-amber' : 'badge-green';
+      const pLabel = h.priority==='high' ? '🔴 High' : h.priority==='medium' ? '🟡 Medium' : '🟢 Low';
+      const dateStr = h.date ? new Date(h.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '';
+      return `<div class="hw-item ${h.done?'done':''} fade-in">
+        <div class="hw-check ${h.done?'checked':''}" onclick="toggleDone(${h.id})">${h.done?'<i class="ti ti-check" style="font-size:12px"></i>':''}</div>
+        <div class="hw-info">
+          <div class="hw-title">${h.task}</div>
+          <div class="hw-meta">
+            <span class="badge badge-blue">${h.subject}</span>
+            <span class="badge ${pBadge}">${pLabel}</span>
+            ${dateStr?`<span class="badge badge-blue"><i class="ti ti-calendar" style="font-size:10px"></i> ${dateStr}</span>`:''}
+          </div>
+        </div>
+        <div class="hw-actions">
+          <button class="icon-btn" onclick="deleteHW(${h.id})" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  updateHomeStats();
+}
+
+function toggleDone(id) {
+  const h = homeworkItems.find(h=>h.id===id);
+  if (h) { h.done = !h.done; renderHomework(); }
+}
+function deleteHW(id) {
+  homeworkItems = homeworkItems.filter(h=>h.id!==id);
+  renderHomework();
+}
+function filterHW(f, el) {
+  hwFilter = f;
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderHomework();
+}
+
+async function callAI(prompt, outputEl, systemMsg) {
+  outputEl.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: systemMsg || 'You are Smart Study Buddy AI, a friendly and encouraging assistant for students in Grade 5–10. Use simple, clear language. Be concise, warm, and supportive. Avoid jargon. Use bullet points where helpful.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(b=>b.type==='text'?b.text:'').join('') || 'Sorry, I could not get a response. Please try again!';
+    outputEl.innerHTML = '';
+    outputEl.textContent = text;
+  } catch(e) {
+    outputEl.textContent = 'Oops! Could not connect to AI. Please check your connection and try again.';
+  }
+}
+
+async function getAISuggestion() {
+  if (homeworkItems.filter(h=>!h.done).length === 0) {
+    alert('Add some homework tasks first!'); return;
+  }
+  const sugEl = document.getElementById('ai-hw-suggestion');
+  sugEl.style.display='block';
+  sugEl.innerHTML = `<div class="ai-suggestion"><i class="ti ti-robot"></i><div><strong>AI thinking...</strong> <div class="loading-dots" style="display:inline-flex"><span></span><span></span><span></span></div></div></div>`;
+  const pending = homeworkItems.filter(h=>!h.done).map(h=>`- ${h.task} (${h.subject}, ${h.priority} priority, due: ${h.date||'no date'})`).join('\n');
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        system:'You are a friendly student assistant. Give a short, encouraging prioritization suggestion for homework tasks. Be direct and friendly. Max 3-4 sentences.',
+        messages:[{role:'user',content:`Here are my pending homework tasks:\n${pending}\n\nWhich should I do first and why? Give me a quick prioritization tip!`}]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(b=>b.type==='text'?b.text:'').join('') || 'Focus on the highest priority tasks with the nearest deadlines first!';
+    sugEl.innerHTML = `<div class="ai-suggestion fade-in"><i class="ti ti-robot"></i><div><strong>AI suggestion:</strong> ${text}</div></div>`;
+  } catch(e) {
+    sugEl.innerHTML = `<div class="ai-suggestion"><i class="ti ti-robot"></i><div>Focus on high priority items with nearest deadlines first! 📚</div></div>`;
+  }
+}
+
+async function generatePlan() {
+  const subjects = document.getElementById('plan-subjects').value.trim();
+  const hours = document.getElementById('plan-hours').value;
+  const exam = document.getElementById('plan-exam').value;
+  const weak = document.getElementById('plan-weak').value.trim();
+  const notes = document.getElementById('plan-notes').value.trim();
+  if (!subjects) { alert('Please enter your subjects!'); return; }
+  const out = document.getElementById('plan-output');
+  const planText = document.getElementById('plan-text');
+  out.style.display = 'block';
+  const examInfo = exam ? `My exam is on ${new Date(exam).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}` : 'No specific exam date';
+  await callAI(
+    `Create a simple weekly study schedule for a student. Subjects: ${subjects}. Daily hours available: ${hours} hours. ${examInfo}. Weakest subject: ${weak||'none specified'}. Additional notes: ${notes||'none'}. 
+    
+Make a friendly, easy-to-follow schedule with:
+1. Daily time blocks (morning/afternoon/evening)
+2. Which subject to study each day
+3. Break reminders
+4. Extra focus on weak subjects
+5. A motivating closing message
+Keep it practical and encouraging for a school student!`,
+    planText,
+    'You are a friendly study planner for students in Grade 5–10. Create clear, simple, encouraging study schedules. Use emojis sparingly. Format with clear sections using simple headings.'
+  );
+  out.querySelector('.ai-response').classList.add('fade-in');
+}
+
+let chatHistory = [];
+async function sendDoubt() {
+  const input = document.getElementById('doubt-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  addChatMsg(q, 'user');
+  const typingEl = addChatMsg('<div class="loading-dots"><span></span><span></span><span></span></div>', 'ai', true);
+  chatHistory.push({role:'user', content:q});
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:600,
+        system:'You are a friendly school tutor for Grade 5–10 students. Explain concepts simply and clearly using everyday examples. Keep answers concise (under 150 words). Be encouraging. Use simple English. If a math question, show the steps clearly.',
+        messages: chatHistory
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(b=>b.type==='text'?b.text:'').join('') || 'I could not get an answer. Please try again!';
+    chatHistory.push({role:'assistant',content:text});
+    typingEl.querySelector('.chat-bubble').textContent = text;
+  } catch(e) {
+    typingEl.querySelector('.chat-bubble').textContent = 'Oops! Could not connect. Please check your internet and try again.';
+  }
+}
+
+function addChatMsg(content, who, isHTML=false) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg '+who+' fade-in';
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble';
+  if (isHTML) bubble.innerHTML = content;
+  else bubble.textContent = content;
+  div.appendChild(bubble);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function askSample(q) {
+  document.getElementById('doubt-input').value = q;
+  sendDoubt();
+}
+
+async function generateTip(type='general') {
+  const tipEl = document.getElementById('tip-content');
+  const emojiEl = document.getElementById('tip-emoji');
+  const catEl = document.getElementById('tip-cat');
+  tipEl.innerHTML = '<div class="loading-dots" style="display:inline-flex"><span></span><span></span><span></span></div>';
+  emojiEl.textContent = '🤔';
+  const prompts = {
+    general: 'Give me one specific, actionable study tip for a school student. Make it practical and encouraging.',
+    motivation: 'Give me an inspiring and motivating message for a student who feels like giving up on studying. Be warm, personal, and uplifting.',
+    memory: 'Share one creative memory trick or mnemonic technique that school students can use to remember information better.',
+    exam: 'Give one specific exam preparation tip for a student preparing for their upcoming tests. Focus on what to do in the last few days before the exam.'
+  };
+  const icons = { general:'💡', motivation:'🔥', memory:'🧠', exam:'✏️' };
+  emojiEl.textContent = icons[type]||'💡';
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:200,
+        system:'You are an encouraging study coach for school students aged 10–16. Give one clear, practical, positive tip. Keep it to 2–3 sentences. Be friendly and motivating.',
+        messages:[{role:'user',content:prompts[type]||prompts.general}]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(b=>b.type==='text'?b.text:'').join('') || 'Keep going — every bit of studying adds up!';
+    tipEl.textContent = text;
+    const cats = {general:'Study tip',motivation:'Motivation boost',memory:'Memory trick',exam:'Exam prep'};
+    catEl.innerHTML = `<span class="badge badge-blue">${cats[type]||'Study tip'}</span>`;
+  } catch(e) {
+    tipEl.textContent = 'Take short breaks every 25 minutes to keep your brain fresh and focused!';
+    catEl.innerHTML = '<span class="badge badge-blue">Study tip</span>';
+  }
+}
+
+function toggleVoice() {
+  const btn = document.getElementById('voice-btn');
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('Voice input is not supported in this browser. Try Chrome!'); return;
+  }
+  if (isRecording) {
+    voiceRecognition && voiceRecognition.stop();
+    isRecording = false;
+    btn.classList.remove('recording');
+    btn.innerHTML = '<i class="ti ti-microphone"></i> Voice';
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  voiceRecognition = new SR();
+  voiceRecognition.lang = 'en-US';
+  voiceRecognition.onresult = e => {
+    document.getElementById('doubt-input').value = e.results[0][0].transcript;
+    isRecording = false;
+    btn.classList.remove('recording');
+    btn.innerHTML = '<i class="ti ti-microphone"></i> Voice';
+  };
+  voiceRecognition.onerror = () => {
+    isRecording = false;
+    btn.classList.remove('recording');
+    btn.innerHTML = '<i class="ti ti-microphone"></i> Voice';
+  };
+  voiceRecognition.start();
+  isRecording = true;
+  btn.classList.add('recording');
+  btn.innerHTML = '<i class="ti ti-microphone"></i> Recording...';
+}
+
+initStreak();
+pickRandomQuote();
+renderHomework();
+</script>
